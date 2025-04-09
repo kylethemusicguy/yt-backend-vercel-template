@@ -3,43 +3,32 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - main  # Trigger this workflow only on pushes to the `main` branch
+      - main  # Trigger deploy on pushes to the main branch (adjust if necessary)
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner for the job
+    runs-on: ubuntu-latest  # Use the latest Ubuntu image
 
     steps:
-      # Checkout the repository
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Checkout the repository code
 
-      # Set up Node.js (Install dependencies)
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v2  # Set up Node.js
         with:
-          node-version: '14'  # You can set any version of Node.js here
+          node-version: '14'  # Specify the Node.js version, adjust if needed
 
-      # hi
-      # Install dependencies (npm install)
       - name: Install dependencies
-        run: npm install
-
-      # Deploy to Vercel
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Vercel API token
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}  # Your Vercel project ID
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}  # Your Vercel organization ID
         run: |
-          npm run build
-          vercel --prod --token $VERCEL_TOKEN --confirm
+          npm ci  # Install dependencies using npm ci (this is preferred in CI/CD pipelines)
 
-      
-
-
-          
-
-
-          
-
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v20  # Use the Vercel action to deploy
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}  # Vercel Token from GitHub secrets
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}  # Vercel Project ID from GitHub secrets
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}  # Optional: Use for team/organization, can be skipped for personal accounts
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Set Vercel Token in the environment
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}  # Set Vercel Project ID in the environment
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}  # Set Vercel Org ID in the environment (skip if not applicable)
