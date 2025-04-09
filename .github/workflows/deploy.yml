@@ -27,8 +27,6 @@ jobs:
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}  # Vercel Token from GitHub secrets
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}  # Vercel Project ID from GitHub secrets
-         
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Set Vercel Token in the environment
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}  # Set Vercel Project ID in the environment
-          \
